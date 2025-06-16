@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ENVelope
 
-## Getting Started
+> **The secure, encrypted, and reliable emailing software**
 
-First, run the development server:
+ENVelope is a next-generation email client and protocol alternative that reimagines how modern communication should work: **secure by default**, **elegantly simple**, and **100% under your control**.
+
+---
+
+## ✨ Features
+
+- **End-to-End Encryption (E2EE)** — Powered by state-of-the-art cryptographic protocols.
+- **Decentralized Identity Format** — Users own their addresses and can self-host.
+- **Simple, Fast Client** — Lightweight cross-platform app (macOS, Linux, Windows).
+- **Open Protocol** — Spec published and available for anyone to implement.
+- **Zero Ads, Zero Tracking** — Your data stays yours — forever.
+- **Plugin System** — Extend your client with community-driven plugins.
+- **Secure Attachments** — Encrypted file transfer baked in.
+
+---
+
+### Message Flow
+
+1. Compose message.
+2. E2EE encrypts content client-side.
+3. Message travels securely to the recipient’s server.
+4. Decryption occurs only on the recipient's device.
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
+git clone https://github.com/Hdev-Group/envelope/
+cd envelope
+npm install
+npm run build
+```
+### Running the client
+```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Building for prod
+```bash
+npm run build
+npm start
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🔒 Security Design
+- End-to-End Encryption (E2EE) for messages and attachments.
 
-## Learn More
+- Perfect Forward Secrecy (PFS) with every message.
 
-To learn more about Next.js, take a look at the following resources:
+- Uses X25519, AES-GCM, and HMAC-SHA256.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Optional self-hosted mailbox servers for total control.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Open audit logs and verifiable builds.
 
-## Deploy on Vercel
+### 🌐 Protocol Overview
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Be transport-agnostic (can run over HTTP/2, QUIC, or even Bluetooth).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Ensure minimal metadata leakage.
+
+- Support multiple devices per user (key rotation included).
+
+### 💻 Screenshots
+> Coming soon! Stay tuned for beautiful previews of the ENVelope Client.
+
+
+### ⚠️ Disclaimers
+ENVelope is in very early development. Use caution with sensitive data.
+
+Protocol changes may occur without notice until v1.0.
+
+### 👥 Authors
+Lead Engineer | Harry Campbell — hdev.uk
+
+### 🔗 Related Projects
+ProtonMail — Inspiration for privacy-focused mail
+SimpleLogin — Email aliasing service
+PGP.js — JS crypto library used internally
+
+### 📅 Roadmap
+ Core Messaging
+
+ Encrypted Attachments
+
+ Multi-device Sync
+
+ Mobile Apps (iOS, Android)
+
+ Federation Support
+
+ Plugin Marketplace
