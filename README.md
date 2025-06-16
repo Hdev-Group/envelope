@@ -29,16 +29,10 @@ ENVelope is a next-generation email client and protocol alternative that reimagi
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Node.js >= 20.x
-- Rust (for cryptographic operations)
-- OpenSSL
-
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/envelope.git
+git clone https://github.com/Hdev-Group/envelope/
 cd envelope
 npm install
 npm run build
