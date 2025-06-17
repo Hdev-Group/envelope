@@ -25,11 +25,25 @@ import {
   Bell,
   HelpCircle,
   ArrowLeft,
+  Flag,
+  ChevronDown,
+  Calendar,
+  UserPlus,
+  ExternalLink,
+  Printer,
+  Share,
+  Copy,
+  Clock,
+  BellOff,
+  Download,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import { ThemeSelector } from "@/components/themeselector/themeselect"
 import VerifiedBadge from "@/components/emailcomponents/VerifiedBadge"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { V } from "vitest/dist/chunks/reporters.d.DL9pg5DB.js"
+import { CustomDropdown, DropdownItem, DropdownLabel, DropdownSeparator } from "@/components/dropdowns/dropdown"
 
 interface Email {
   id: string
@@ -49,17 +63,17 @@ interface Email {
 const mockEmails: Email[] = [
     {
         id: "2",
-        sender: "Jane Smith",
-        senderEmail: "jane.smith@company.com",
+        sender: "Harry Campbell",
+        senderEmail: "harry.campbell@envelope.com",
         subject: "Project Update",
-        preview: "Hi team, please find attached the latest project update and next steps.",
+        preview: "Hi users, Check out this new product.",
         time: "1 hour ago",
         isRead: false,
         isStarred: false,
-        hasAttachment: true,
+        hasAttachment: false,
         avatar: "/avatars/jane.png",
         isImportant: false,
-        isVerified: "verified",
+        isVerified: "staff",
     },
     {
         id: "3",
@@ -324,10 +338,18 @@ const sidebarItems = [
 export default function EmailApp() {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(mockEmails[0])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+const [showFullHeader, setShowFullHeader] = useState(false)
 
-  return (
+// Toggle star for an email by id
+function onStar(emailId: string) {
+    setSelectedEmail((prev) => {
+        if (!prev || prev.id !== emailId) return prev
+        return { ...prev, isStarred: !prev.isStarred }
+    })
+}
+return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-background to-foreground/30">
-      <header className="bg-muted/50 backdrop-blur-xl border-b z-50 border-background px-4 lg:px-6 py-4">
+      <header className="bg-muted/50 backdrop-blur-xl z-50 border-background px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
@@ -385,7 +407,7 @@ export default function EmailApp() {
         </div>
       </header>
 
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 overflow-hidden relative backdrop-blur-3xl bg-muted/50">
         {!sidebarCollapsed && (
           <div
             className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
@@ -395,7 +417,7 @@ export default function EmailApp() {
 
         <div
           className={cn(
-            "bg-background rounded-r-3xl  backdrop-blur-xl border-r border-y border-slate-700/50 flex flex-col transition-all duration-500 ease-in-out",
+            "bg-background rounded-r-3xl  backdrop-blur-xl  flex flex-col transition-all duration-500 ease-in-out",
             "lg:relative absolute inset-y-0 left-0 z-40",
             sidebarCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
             "lg:translate-x-0",
@@ -404,7 +426,7 @@ export default function EmailApp() {
         >
           <div className="p-4">
             <Button
-              variant="compose"
+              variant="pricing"
               size={sidebarCollapsed ? "icon-lg" : "lg"}
               className={cn(
                 "rounded-2xl shadow-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300",
@@ -449,7 +471,7 @@ export default function EmailApp() {
 
         <div
           className={cn(
-            " backdrop-blur-xl border-r border-slate-700/50 flex flex-col transition-all duration-300",
+            "flex flex-col transition-all duration-300",
             "w-full ",
             selectedEmail ? "hidden lg:flex lg:w-96" : "flex",
           )}
@@ -468,7 +490,7 @@ export default function EmailApp() {
               </div>
             </div>
           </div>
-          <ScrollArea className="flex-1 overflow-y-scroll">
+          <ScrollArea className="flex-1 custom-scroller overflow-y-scroll">
             <div className="p-2 space-y-1">
               {mockEmails.map((email) => (
                 <div
@@ -542,124 +564,240 @@ export default function EmailApp() {
         {selectedEmail ? (
         <div
           className={cn(
-            "flex-1 flex flex-col  backdrop-blur-xl transition-all duration-300",
+            "flex-1 flex flex-col rounded-l-2xl backdrop-blur-xl transition-all duration-300",
             selectedEmail ? "flex" : "hidden lg:flex",
           )}
         >
-              <div className="p-4 lg:p-8 border-b border-slate-700/30">
-                <div className="lg:hidden mb-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSelectedEmail(null)}
-                    className="gap-2 rounded-xl text-foreground"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Inbox
-                  </Button>
-                </div>
+            <div className="flex flex-col rounded-l-2xl h-full bg-background ">
+                <header className="border-b rounded-tl-2xl  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                    <div className="flex items-center gap-3 p-4">
+                    <Button variant="ghost" size="sm" onClick={() => setSelectedEmail(null)} className="lg:hidden" aria-label="Back to inbox">
+                        <ArrowLeft className="h-4 w-4" />
+                    </Button>
 
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-start gap-4">
-                    <Avatar className="h-12 w-12 ring-2 ring-blue-500/30">
-                      <AvatarImage src={selectedEmail.avatar || "/placeholder.svg"} />
-                      <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold">
-                        {selectedEmail.sender
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h2 className="text-2xl font-bold text-foreground mb-2">{selectedEmail.subject}</h2>
-                      <div className="text-sm flex flex-row items-center text-foreground">
-                        <span className="font-semibold text-foreground">{selectedEmail.sender}</span>
-                        <span className="mx-2">•</span>
-                        <span>{selectedEmail.senderEmail}</span>
-                        {selectedEmail.isVerified && (
-                          <>
-                            <span className="mx-2">•</span>
-                            <span>
-                              <VerifiedBadge type={selectedEmail.isVerified as any} isVerified={selectedEmail.senderEmail as any} />
-                            </span>
-                          </>
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <h1 className="font-semibold text-lg truncate">{selectedEmail.subject}</h1>
+                        {selectedEmail.isImportant === true && (
+                        <Badge variant="destructive" className="text-xs">
+                            <Flag className="h-3 w-3 mr-1" />
+                            High
+                        </Badge>
                         )}
-                      </div>
-                      <div className="text-xs text-foreground/60 mt-1 font-medium">{selectedEmail.time} • To: me</div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <Button variant="star" size="icon" className="rounded-xl">
-                      <Star className={cn("h-4 w-4", selectedEmail.isStarred ? "fill-current" : "")} />
-                    </Button>
-                    <Button variant="glass" size="icon" className="rounded-xl">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                <div className="flex flex-wrap items-center gap-2 lg:gap-3">
-                  <Button variant="reply" size="sm" className="gap-2 rounded-xl flex-1 lg:flex-none min-w-0">
-                    <Reply className="h-4 w-4" />
-                    <span className="hidden sm:inline">Reply</span>
-                  </Button>
-                  <Button variant="reply" size="sm" className="gap-2 rounded-xl flex-1 lg:flex-none min-w-0">
-                    <ReplyAll className="h-4 w-4" />
-                    <span className="hidden sm:inline">Reply All</span>
-                  </Button>
-                  <Button variant="reply" size="sm" className="gap-2 rounded-xl flex-1 lg:flex-none min-w-0">
-                    <Forward className="h-4 w-4" />
-                    <span className="hidden sm:inline">Forward</span>
-                  </Button>
-                  <Button variant="archive" size="sm" className="gap-2 rounded-xl">
-                    <Archive className="h-4 w-4" />
-                    <span className="hidden lg:inline">Archive</span>
-                  </Button>
-                  <Button variant="delete" size="sm" className="gap-2 rounded-xl">
-                    <Trash2 className="h-4 w-4" />
-                    <span className="hidden lg:inline">Delete</span>
-                  </Button>
-                </div>
-              </div>
-              <ScrollArea className="flex-1 p-4 lg:p-8">
-                <div className="prose prose-invert max-w-none">
-                  <div className="bg-foreground/40 backdrop-blur-sm ">
-                    <p className="text-foreground leading-relaxed mb-4 text-base">{selectedEmail.preview}</p>
-                    <p className="text-foreground leading-relaxed mb-4 text-base">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                      nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                    <p className="text-foreground leading-relaxed mb-4 text-base">
-                      Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                      mollit anim id est laborum.
-                    </p>
-                    <p className="text-foreground leading-relaxed text-base">
-                      Best regards,
-                      <br />
-                      <span className="font-semibold text-foreground">{selectedEmail.sender}</span>
-                    </p>
-                  </div>
-
-                  {selectedEmail.hasAttachment && (
-                    <div className="mt-6 p-6 bg-background/20 backdrop-blur-sm rounded-2xl border border-slate-600/30">
-                      <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-500/20 rounded-xl">
-                          <Paperclip className="h-5 w-5 text-blue-400" />
+                    <TooltipProvider>
+                        <div className="flex items-center gap-1">
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onStar(selectedEmail.id)}
+                                className={cn("h-8 w-8", selectedEmail.isStarred && "text-yellow-500")}
+                            >
+                                <Star className={cn("h-4 w-4", selectedEmail.isStarred && "fill-current")} />
+                            </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>{selectedEmail.isStarred ? "Remove star" : "Add star"}</TooltipContent>
+                        </Tooltip>
+                        <CustomDropdown
+                            trigger={
+                            <Button variant="ghost" size="sm" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                            }
+                            align="end"
+                            contentClassName="w-56"
+                        >
+                            <DropdownLabel>Email Actions</DropdownLabel>
+                            <DropdownItem 
+                            icon={<Flag className="h-4 w-4" />}
+                            selected={selectedEmail.isImportant}
+                            >
+                            {selectedEmail.isImportant ? "Remove importance" : "Mark as important"}
+                            </DropdownItem>
+                            <DropdownItem icon={<Clock className="h-4 w-4" />}>
+                            Snooze
+                            </DropdownItem>
+                            
+                            <DropdownSeparator />
+                            
+                            <DropdownItem icon={<Copy className="h-4 w-4" />} shortcut="⌘C">
+                            Copy email address
+                            </DropdownItem>
+                            <DropdownItem icon={<Share className="h-4 w-4" />}>
+                            Share
+                            </DropdownItem>
+                            <DropdownItem icon={<Printer className="h-4 w-4" />} shortcut="⌘P">
+                            Print
+                            </DropdownItem>
+                            <DropdownItem icon={<ExternalLink className="h-4 w-4" />}>
+                            Open in new window
+                            </DropdownItem>
+                            
+                            <DropdownSeparator />
+                            
+                            <DropdownItem icon={<UserPlus className="h-4 w-4" />}>
+                            Add to contacts
+                            </DropdownItem>
+                            <DropdownItem icon={<Calendar className="h-4 w-4" />}>
+                            Create event
+                            </DropdownItem>
+                            
+                            <DropdownSeparator />
+                            
+                            <DropdownItem 
+                            icon={<Archive className="h-4 w-4" />}
+                            shortcut="E"
+                            >
+                            Archive
+                            </DropdownItem>
+                            <DropdownItem
+                            icon={<Trash2 className="h-4 w-4" />}
+                            destructive
+                            shortcut="⌘⌫"
+                            >
+                            Delete
+                            </DropdownItem>
+                        </CustomDropdown>
                         </div>
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-foreground">Q4_Marketing_Strategy.pdf</div>
-                          <div className="text-xs text-muted-foreground">2.4 MB</div>
+                    </TooltipProvider>
+                    </div>
+
+                    {/* Email Meta Information */}
+                    <div className="px-4 pb-4">
+                    <div className="flex items-start gap-3">
+                        <Avatar className="h-10 w-10 ring-2 ring-border">
+                        <AvatarImage src={selectedEmail.avatar || "/placeholder.svg"} alt={selectedEmail.sender} />
+                        <AvatarFallback className="bg-primary text-primary-foreground font-medium">
+                            {selectedEmail.sender.split(" ").map((name) => name.charAt(0).toUpperCase()).join("")}
+                        </AvatarFallback>
+                        </Avatar>
+
+                        <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-sm">{selectedEmail.sender}</span>
+                            {selectedEmail.isVerified && (
+                                <VerifiedBadge
+                                    isVerified={selectedEmail.senderEmail}
+                                    size="sm"
+                                    type={selectedEmail.isVerified as any}
+                                />
+                            )}
                         </div>
-                        <Button variant="cta-primary" size="sm" className="rounded-xl">
-                          Download
+
+                        <div className="text-xs text-muted-foreground  flex-row w-fullspace-y-1">
+                            <div className="flex items-center gap-2 mb-2">
+                            <span>to me</span>
+                            <time dateTime={selectedEmail.time} className="font-medium">
+                                {selectedEmail.time}
+                            </time>
+                            </div>
+
+                            {!showFullHeader && (
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setShowFullHeader(true)}
+                                className="h-auto p-0 text-xs px-2 py-0.5 text-muted-foreground hover:text-foreground"
+                            >
+                                <ChevronDown className="h-3 w-3 mr-1" />
+                                Show details
+                            </Button>
+                            )}
+
+                            {showFullHeader && (
+                            <div className="space-y-1 text-xs">
+                                <div>from: {selectedEmail.senderEmail}</div>
+                                <div>date: {selectedEmail.time}</div>
+                                <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setShowFullHeader(false)}
+                                className="h-auto p-0 px-2 py-0.5 text-xs text-muted-foreground hover:text-foreground"
+                                >
+                                Hide details
+                                </Button>
+                            </div>
+                            )}
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="px-4 pb-4">
+                    <div className="flex flex-wrap gap-2">
+                        <Button variant="default" size="sm" className="gap-2">
+                        <Reply className="h-4 w-4" />
+                        Reply
                         </Button>
-                      </div>
+                        <Button variant="outline" size="sm" className="gap-2">
+                        <ReplyAll className="h-4 w-4" />
+                        Reply All
+                        </Button>
+                        <Button variant="outline" size="sm" className="gap-2">
+                        <Forward className="h-4 w-4" />
+                        Forward
+                        </Button>
                     </div>
-                  )}
+                    </div>
+                </header>
+
+                {/* Email Content */}
+                <div className="flex w-full h-full overflow-y-scroll custom-scroller ">
+                    <main className="p-4 lg:p-6 w-full">
+                    <article className="max-w-none z-0">
+                        <div className="space-y-4 text-sm leading-relaxed">
+                            <>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip ex ea commodo consequat.
+                            </p>
+                            <p>
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                                anim id est laborum.
+                            </p>
+                            </>
+
+                        <div className="mt-6 pt-4 border-t">
+                            <p className="mb-0">
+                            Best regards,
+                            <br />
+                            <strong>{selectedEmail.sender}</strong>
+                            </p>
+                        </div>
+                        </div>
+                    </article>
+
+                    {/* Attachments */}
+                    {selectedEmail.hasAttachment && (
+                        <section className="mt-6" aria-labelledby="attachments-heading">
+                        <h2 id="attachments-heading" className="text-sm font-medium mb-3">
+                            Attachments
+                        </h2>
+                        <div className="space-y-2">
+
+                            <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg border">
+                                <div className="p-2 bg-primary/10 rounded-md">
+                                <Paperclip className="h-4 w-4 text-primary" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                <div className="text-sm font-medium">Q4_Marketing_Strategy.pdf</div>
+                                <div className="text-xs text-muted-foreground">2.4 MB</div>
+                                </div>
+                                <Button variant="outline" size="sm" className="gap-2">
+                                <Download className="h-4 w-4" />
+                                Download
+                                </Button>
+                            </div>
+                        </div>
+                        </section>
+                    )}
+                    </main>
                 </div>
-              </ScrollArea>
+                </div>
             </div>
           ) : (
             null

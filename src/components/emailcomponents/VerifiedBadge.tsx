@@ -102,7 +102,7 @@ export default function VerifiedBadge({
       <div className="relative inline-flex">
         <div
           className={cn(
-            "flex items-center justify-center rounded-full transition-all duration-200",
+            "flex items-center justify-center rounded-full overflow transition-all duration-200",
             config.bgColor,
             size === "sm" ? "w-4 h-4" : size === "md" ? "w-5 h-5" : "w-6 h-6",
           )}
@@ -145,16 +145,16 @@ export default function VerifiedBadge({
       {showTooltip && isHovering && (
         <div
           className={cn(
-            "absolute left-0 top-full mt-2 z-50 cursor-default bg-gray-900/95 border border-gray-700/50 rounded-xl shadow-2xl backdrop-blur-lg animate-in fade-in-50 slide-in-from-top-2 duration-200",
+            "absolute left-0 top-full overflow-hidden mt-2 z-50 cursor-default bg-gray-900/95 border border-gray-700/50 rounded-xl shadow-2xl backdrop-blur-lg animate-in fade-in-50 slide-in-from-top-2 duration-200",
             sizeClasses[size].tooltip,
           )}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
 
-          <div className="p-4 border-b border-gray-700/30">
+          <div className="p-4 z-50 border-b border-gray-700/30">
             <div className="flex items-center gap-3">
-              <h3 className="text-white font-semibold text-base">{isVerified}</h3>
+              <h3 className="text-white max-w-48 overflow-ellipsis overflow-hidden font-semibold text-base">{isVerified}</h3>
               <div
                 className={cn(
                   "flex items-center gap-1.5 border rounded-full px-2 py-0.5 text-xs",
@@ -168,14 +168,14 @@ export default function VerifiedBadge({
             </div>
           </div>
 
-          <div className="p-4">
+          <div className="p-4 z-50">
             <div className="flex items-start gap-3 mb-4">
               <div className={cn("p-2 rounded-lg", config.bgColor)}>
                 <IconComponent className={cn("h-5 w-5", config.textColor)} />
               </div>
               <div>
                 <h4 className="text-white font-semibold text-sm mb-1">{config.label} Account</h4>
-                <p className={cn("text-sm", config.textColor)}>{isVerified} has been verified by Envelope.</p>
+                <p className={cn("text-sm", config.textColor)}><b>{isVerified}</b> has been verified by Envelope.</p>
               </div>
             </div>
 
