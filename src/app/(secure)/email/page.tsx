@@ -1,4 +1,4 @@
-import Emails from "./dashboard";
+import Emails from "./emailhomemain";
 
 export default function Page() {
   return(

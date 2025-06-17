@@ -10,7 +10,7 @@ func main() {
 	fmt.Println("Starting Envelope Backend...")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to the Envelope!")
+		fmt.Fprintf(w, "Welcome to Envelope!")
 	})
 
 	if err := http.ListenAndServe(":3001", nil); err != nil {
