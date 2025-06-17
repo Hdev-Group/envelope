@@ -102,7 +102,7 @@ export default function VerifiedBadge({
       <div className="relative inline-flex">
         <div
           className={cn(
-            "flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110",
+            "flex items-center justify-center rounded-full transition-all duration-200",
             config.bgColor,
             size === "sm" ? "w-4 h-4" : size === "md" ? "w-5 h-5" : "w-6 h-6",
           )}
@@ -130,7 +130,7 @@ export default function VerifiedBadge({
     <div className="relative inline-flex">
       <div
         className={cn(
-          "flex items-center gap-1.5 border rounded-full cursor-pointer transition-all duration-200 hover:scale-105",
+          "flex items-center gap-1.5 border rounded-full cursor-pointer transition-all duration-200",
           config.bgColor,
           config.borderColor,
           sizeClasses[size].badge,
