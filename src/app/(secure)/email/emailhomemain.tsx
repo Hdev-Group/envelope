@@ -44,6 +44,7 @@ import VerifiedBadge from "@/components/emailcomponents/VerifiedBadge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { V } from "vitest/dist/chunks/reporters.d.DL9pg5DB.js"
 import { CustomDropdown, DropdownItem, DropdownLabel, DropdownSeparator } from "@/components/dropdowns/dropdown"
+import SendEmailWidget from "@/components/widget/widget"
 
 interface Email {
   id: string
@@ -348,7 +349,8 @@ function onStar(emailId: string) {
     })
 }
 return (
-    <div className="flex flex-col h-screen bg-gradient-to-br from-background to-foreground/30">
+    <div className="flex flex-col h-screen relative bg-gradient-to-br from-background to-foreground/30">
+      <SendEmailWidget />
       <header className="bg-muted/50 backdrop-blur-xl z-50 border-background px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -417,7 +419,7 @@ return (
 
         <div
           className={cn(
-            "bg-background rounded-r-3xl  backdrop-blur-xl  flex flex-col transition-all duration-500 ease-in-out",
+            "bg-background lg:rounded-r-3xl rounded-br-3xl  backdrop-blur-xl  flex flex-col transition-all duration-500 ease-in-out",
             "lg:relative absolute inset-y-0 left-0 z-40",
             sidebarCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
             "lg:translate-x-0",
@@ -444,9 +446,9 @@ return (
                   key={item.label}
                   variant={item.active ? "glass" : "ghost"}
                   className={cn(
-                    "w-full justify-start gap-4 h-12 rounded-2xl transition-all duration-300 hover:bg-foreground/10",
+                    "w-full justify-start gap-4 h-12 rounded-2xl transition-all duration-300 hover:bg-accent/50",
                     sidebarCollapsed && "justify-center",
-                    item.active && "bg-accent/50 border border-foreground/50 shadow-lg",
+                    item.active && "bg-accent/40 border border-foreground/5 shadow-lg",
                   )}
                   size={sidebarCollapsed ? "icon-lg" : "default"}
                 >
@@ -455,9 +457,7 @@ return (
                     <>
                       <span className="flex-1 text-left font-medium text-foreground">{item.label}</span>
                       {item.count && (
-                        <Badge className="bg-accent/20 text-foreground border-accent-foreground rounded-full px-2 py-1 text-xs font-semibold">
-                          {item.count}
-                        </Badge>
+                          <span className="text-xs text-foreground">{item.count}</span>
                       )}
                     </>
                   )}
