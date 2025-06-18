@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import {
   Minus,
   Maximize2,
+  Minimize2,
   X,
   ChevronDown,
   Bold,
@@ -27,6 +28,7 @@ export default function SendEmailWidget() {
   const [height, setHeight] = useState(500)
   const [showCc, setShowCc] = useState(false)
   const [showBcc, setShowBcc] = useState(false)
+  const [bigScreen, setBigScreen] = useState(false)
 
   const handleResize = (e: React.MouseEvent) => {
     const startY = e.clientY
@@ -48,19 +50,14 @@ export default function SendEmailWidget() {
 
   if (!isExpanded) {
     return (
-      <div className="fixed z-50 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-white shadow-lg border border-gray-300 border-b-0">
-        <div className="flex items-center justify-between px-4 py-3 bg-gray-100 rounded-t-xl">
-          <span className="text-sm font-medium text-gray-700">New Message</span>
+      <div className="fixed z-50 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-background shadow-lg border cursor-pointer border-b-0" onClick={() => setIsExpanded(true)}>
+        <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl">
+          <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6 hover:bg-gray-200"
-              onClick={() => setIsExpanded(true)}
-            >
+            <Button variant="ghost" size="icon" className="h-6 w-6 " onClick={() => setIsExpanded(true)}>
               <Maximize2 className="w-3 h-3" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 hover:bg-gray-200">
+            <Button variant="ghost" size="icon" className="h-6 w-6 ">
               <X className="w-3 h-3" />
             </Button>
           </div>
@@ -72,29 +69,20 @@ export default function SendEmailWidget() {
   return (
     <>
       <div
-        className="fixed z-50 right-10 bottom-0 w-[600px] bg-background shadow-2xl border border-foreground border-b-0 rounded-t-xl"
-        style={{ height: `` }}
+        className={`fixed z-50 bg-background shadow-2xl border ${
+          bigScreen
+            ? "inset-0 w-full h-full rounded-none"
+            : "border-b-0 rounded-t-xl h-auto w-[600px] right-10 bottom-0"
+        }`}
       >
-
-        <div
-          className="absolute top-0 left-0 right-0 h-1 cursor-ns-resize hover:bg-blue-500 transition-colors"
-          onMouseDown={handleResize}
-        />
-
-        {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl border-b">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => setIsExpanded(false)}
-            >
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setIsExpanded(false); setBigScreen(false); }}>
               <Minus className="w-3 h-3" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
-              <Maximize2 className="w-3 h-3" />
+            <Button variant="ghost" size="icon" onClick={() => setBigScreen(!bigScreen)} className="h-6 w-6">
+              {bigScreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
             </Button>
             <Button variant="ghost" size="icon" className="h-6 w-6">
               <X className="w-3 h-3" />
@@ -102,9 +90,9 @@ export default function SendEmailWidget() {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex flex-col h-full">
-          {/* From Field */}
+
+        <div className={`flex flex-col ${bigScreen ? "h-[calc(100vh-60px)]" : "h-full"}`}>
+
           <div className="px-4 py-2 border-b">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -117,7 +105,7 @@ export default function SendEmailWidget() {
             </div>
           </div>
 
-          {/* To Field */}
+
           <div className="px-4 py-2 border-b">
             <div className="flex items-center gap-2">
               <span className="text-sm text-foreground">To:</span>
@@ -129,7 +117,7 @@ export default function SendEmailWidget() {
             </div>
           </div>
 
-          {/* Cc Field */}
+
           {showCc && (
             <div className="px-4 py-2 border-b">
               <div className="flex items-center gap-2">
@@ -139,7 +127,7 @@ export default function SendEmailWidget() {
             </div>
           )}
 
-          {/* Bcc Field */}
+
           {showBcc && (
             <div className="px-4 py-2 border-b">
               <div className="flex items-center gap-2">
@@ -149,7 +137,6 @@ export default function SendEmailWidget() {
             </div>
           )}
 
-          {/* Subject Field */}
           <div className="px-4 py-2 border-b">
             <Input className="border-0 p-0 h-auto focus-visible:ring-0 text-sm" placeholder="Subject" />
           </div>
@@ -183,15 +170,15 @@ export default function SendEmailWidget() {
             </div>
           </div>
 
-          {/* Compose Area */}
           <div className="flex-1 px-4 py-3">
             <Textarea
-              className="w-full h-full border-0 resize-none focus-visible:ring-0 text-sm"
+              className={`w-full border-0 resize-none focus-visible:ring-0 text-sm ${
+                bigScreen ? "h-full min-h-[300px]" : "h-32"
+              }`}
               placeholder="Compose email"
             />
           </div>
 
-          {/* Bottom Toolbar */}
           <div className="px-4 py-3 border-t bg-background">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
@@ -221,7 +208,7 @@ export default function SendEmailWidget() {
                   <MoreHorizontal className="w-4 h-4" />
                 </Button>
               </div>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Button variant="destructive" size="icon" className="h-8 w-8">
                 <Trash2 className="w-4 h-4" />
               </Button>
             </div>

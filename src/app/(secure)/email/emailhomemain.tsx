@@ -351,7 +351,7 @@ function onStar(emailId: string) {
 return (
     <div className="flex flex-col h-screen relative bg-gradient-to-br from-background to-foreground/30">
       <SendEmailWidget />
-      <header className="bg-muted/50 backdrop-blur-xl z-50 border-background px-4 lg:px-6 py-4">
+      <header className="bg-muted/50 backdrop-blur-xl z-40 border-background px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
