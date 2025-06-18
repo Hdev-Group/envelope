@@ -108,7 +108,7 @@ export function CustomDropdown({
     setMounted(true)
   }, [])
 
-  const calculatePosition = () => {
+const calculatePosition = () => {
     if (!triggerRef.current) return
 
     const triggerRect = triggerRef.current.getBoundingClientRect()
@@ -119,50 +119,55 @@ export function CustomDropdown({
     let left = 0
     const width = triggerRect.width
 
-    // Calculate vertical position
     if (side === "bottom") {
-      top = triggerRect.bottom + sideOffset
+        top = triggerRect.bottom + sideOffset
     } else if (side === "top") {
-      top = triggerRect.top - sideOffset
+        top = triggerRect.top - sideOffset
     } else if (side === "left" || side === "right") {
-      top = triggerRect.top
+        top = triggerRect.top
     }
 
-    // Calculate horizontal position
     if (side === "bottom" || side === "top") {
-      if (align === "start") {
-        left = triggerRect.left
-      } else if (align === "center") {
-        left = triggerRect.left + triggerRect.width / 2
-      } else if (align === "end") {
-        left = triggerRect.right
-      }
+        if (align === "start") {
+            left = triggerRect.left
+        } else if (align === "center") {
+            left = triggerRect.left + triggerRect.width / 2
+        } else if (align === "end") {
+            left = triggerRect.right
+        }
     } else if (side === "right") {
-      left = triggerRect.right + sideOffset
+        left = triggerRect.right + sideOffset
     } else if (side === "left") {
-      left = triggerRect.left - sideOffset
+        left = triggerRect.left - sideOffset
+    }
+
+    // Use actual content size if available
+    let contentWidth = 230
+    let contentHeight = 300
+    if (contentRef.current) {
+        const rect = contentRef.current.getBoundingClientRect()
+        contentWidth = rect.width
+        contentHeight = rect.height
     }
 
     // Adjust for viewport boundaries
-    const contentWidth = 200 // Approximate content width
-    const contentHeight = 300 // Approximate content height
-
-    if (left + contentWidth > viewportWidth) {
-      left = viewportWidth - contentWidth - 8
+    if (left + contentWidth > viewportWidth - 8) {
+        left = viewportWidth - contentWidth - 8
     }
     if (left < 8) {
-      left = 8
+        left = 8
     }
 
-    if (top + contentHeight > viewportHeight) {
-      top = triggerRect.top - contentHeight - sideOffset
+    if (top + contentHeight > viewportHeight - 8) {
+        top = viewportHeight - contentHeight - 8
     }
     if (top < 8) {
-      top = 8
+        top = 8
     }
 
     setPosition({ top, left, width })
-  }
+}
+
 
   const handleToggle = () => {
     if (disabled) return

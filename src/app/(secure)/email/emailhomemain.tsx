@@ -426,10 +426,10 @@ return (
         >
           <div className="p-4">
             <Button
-              variant="pricing"
+              variant="default"
               size={sidebarCollapsed ? "icon-lg" : "lg"}
               className={cn(
-                "rounded-2xl shadow-2xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300",
+                "rounded-2xl shadow-2xl bg-foreground text-background  transform transition-all duration-300",
                 sidebarCollapsed ? "w-12 h-12" : "w-full justify-start gap-3",
               )}
             >
@@ -437,8 +437,6 @@ return (
               {!sidebarCollapsed && <span className="font-semibold">Compose</span>}
             </Button>
           </div>
-
-          {/* Navigation Items */}
           <ScrollArea className="flex-1 px-4">
             <div className="space-y-2">
               {sidebarItems.map((item) => (
@@ -467,6 +465,12 @@ return (
               ))}
             </div>
           </ScrollArea>
+          <div className="w-full border-t border-slate-700/30 mt-4 py-4">
+              <div className="pl-4 flex flex-col">
+                <p className="text-[14px]">Envelope</p>
+                <p className="text-xs text-muted-foreground">© 2025 Hdev Group</p>
+              </div>
+          </div>
         </div>
 
         <div
@@ -476,7 +480,7 @@ return (
             selectedEmail ? "hidden lg:flex lg:w-96" : "flex",
           )}
         >
-          <div className="p-6 border-b border-slate-700/30">
+          <div className="p-6 pb-0 border-b border-slate-700/30">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-foreground">Inbox</h2>
               <div className="flex items-center gap-2">
@@ -564,11 +568,11 @@ return (
         {selectedEmail ? (
         <div
           className={cn(
-            "flex-1 flex flex-col rounded-l-2xl backdrop-blur-xl transition-all duration-300",
+            "flex-1 flex flex-col rounded-l-none lg:rounded-l-2xl backdrop-blur-xl transition-all duration-300",
             selectedEmail ? "flex" : "hidden lg:flex",
           )}
         >
-            <div className="flex flex-col rounded-l-2xl h-full bg-background ">
+            <div className="flex flex-col rounded-l-none lg:rounded-l-2xl h-full bg-background ">
                 <header className="border-b rounded-tl-2xl  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     <div className="flex items-center gap-3 p-4">
                     <Button variant="ghost" size="sm" onClick={() => setSelectedEmail(null)} className="lg:hidden" aria-label="Back to inbox">
@@ -585,12 +589,26 @@ return (
                         )}
                     </div>
                     <TooltipProvider>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center h-full gap-1">
+                            <div className="flex flex-wrap gap-2 items-center justify-center">
+                                <Button variant="default" size="sm" className="gap-2">
+                                    <Reply className="h-4 w-4" />
+                                    <p className=" md:flex hidden">Reply</p>
+                                </Button>
+                                <Button variant="outline" size="sm" className="gap-2">
+                                    <ReplyAll className="h-4 w-4" />
+                                    <p className=" md:flex hidden">Reply All</p>
+                                </Button>
+                                <Button variant="outline" size="sm" className="gap-2">
+                                    <Forward className="h-4 w-4" />
+                                    <p className=" md:flex hidden">Forward</p>
+                                </Button>
+                            </div>
                         <Tooltip>
                             <TooltipTrigger asChild>
                             <Button
                                 variant="ghost"
-                                size="sm"
+                                size="icon-lg"
                                 onClick={() => onStar(selectedEmail.id)}
                                 className={cn("h-8 w-8", selectedEmail.isStarred && "text-yellow-500")}
                             >
@@ -601,7 +619,7 @@ return (
                         </Tooltip>
                         <CustomDropdown
                             trigger={
-                            <Button variant="ghost" size="sm" className="h-8 w-8">
+                            <Button variant="ghost" size="icon-lg" className="h-8 w-8">
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                             }
@@ -725,22 +743,6 @@ return (
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="px-4 pb-4">
-                    <div className="flex flex-wrap gap-2">
-                        <Button variant="default" size="sm" className="gap-2">
-                        <Reply className="h-4 w-4" />
-                        Reply
-                        </Button>
-                        <Button variant="outline" size="sm" className="gap-2">
-                        <ReplyAll className="h-4 w-4" />
-                        Reply All
-                        </Button>
-                        <Button variant="outline" size="sm" className="gap-2">
-                        <Forward className="h-4 w-4" />
-                        Forward
-                        </Button>
-                    </div>
-                    </div>
                 </header>
 
                 {/* Email Content */}
@@ -749,16 +751,7 @@ return (
                     <article className="max-w-none z-0">
                         <div className="space-y-4 text-sm leading-relaxed">
                             <>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
-                                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat.
-                            </p>
-                            <p>
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                                anim id est laborum.
-                            </p>
+                            <div dangerouslySetInnerHTML={{ __html: selectedEmail.preview }} />
                             </>
 
                         <div className="mt-6 pt-4 border-t">
