@@ -50,7 +50,7 @@ export default function SendEmailWidget() {
 
   if (!isExpanded) {
     return (
-      <div className="fixed z-50 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-background shadow-lg border cursor-pointer border-b-0" onClick={() => setIsExpanded(true)}>
+      <div className="fixed z-50 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-muted-foreground/5 shadow-lg border cursor-pointer border-b-0" onClick={() => setIsExpanded(true)}>
         <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
@@ -75,7 +75,7 @@ export default function SendEmailWidget() {
             : "border-b-0 rounded-t-xl h-auto w-[600px] right-10 bottom-0"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl border-b">
+        <div className="flex items-center justify-between px-4 py-3 bg-muted-foreground/5 rounded-t-xl border-b">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setIsExpanded(false); setBigScreen(false); }}>
