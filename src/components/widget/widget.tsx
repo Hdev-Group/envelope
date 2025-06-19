@@ -50,7 +50,10 @@ export default function SendEmailWidget() {
 
   if (!isExpanded) {
     return (
-      <div className="fixed z-50 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-muted-foreground/5 shadow-lg border cursor-pointer border-b-0" onClick={() => setIsExpanded(true)}>
+      <div
+        className="fixed z-40 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-muted-foreground/5 shadow-lg border cursor-pointer border-b-0"
+        onClick={() => setIsExpanded(true)}
+      >
         <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
@@ -68,17 +71,34 @@ export default function SendEmailWidget() {
 
   return (
     <>
+      {isExpanded && bigScreen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-40"
+          onClick={() => {
+            setIsExpanded(false)
+            setBigScreen(false)
+          }}
+        />
+      )}
       <div
-        className={`fixed z-50 bg-background shadow-2xl border ${
+        className={`fixed z-50 bg-background  shadow-2xl border ${
           bigScreen
-            ? "inset-0 w-full h-full rounded-none"
-            : "border-b-0 rounded-t-xl h-auto w-[600px] right-10 bottom-0"
+            ? "top-[5%] left-[5%] w-[90%] rounded-t-xl rounded-b-xl"
+            : "border-b-0 rounded-t-xl h-auto w-[600px] right-0 bottom-0"
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3 bg-muted-foreground/5 rounded-t-xl border-b">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => { setIsExpanded(false); setBigScreen(false); }}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={() => {
+                setIsExpanded(false)
+                setBigScreen(false)
+              }}
+            >
               <Minus className="w-3 h-3" />
             </Button>
             <Button variant="ghost" size="icon" onClick={() => setBigScreen(!bigScreen)} className="h-6 w-6">
@@ -90,10 +110,8 @@ export default function SendEmailWidget() {
           </div>
         </div>
 
-
-        <div className={`flex flex-col ${bigScreen ? "h-[calc(100vh-60px)]" : "h-full"}`}>
-
-          <div className="px-4 py-2 border-b">
+        <div className={`flex flex-col ${bigScreen ? "h-[calc(100vh-130px)] rounded-b-xl" : "h-full"}`}>
+          <div className="px-4 py-2 border-b ">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-foreground">From:</span>
@@ -104,7 +122,6 @@ export default function SendEmailWidget() {
               </Button>
             </div>
           </div>
-
 
           <div className="px-4 py-2 border-b">
             <div className="flex items-center gap-2">
@@ -117,7 +134,6 @@ export default function SendEmailWidget() {
             </div>
           </div>
 
-
           {showCc && (
             <div className="px-4 py-2 border-b">
               <div className="flex items-center gap-2">
@@ -126,7 +142,6 @@ export default function SendEmailWidget() {
               </div>
             </div>
           )}
-
 
           {showBcc && (
             <div className="px-4 py-2 border-b">
@@ -159,27 +174,30 @@ export default function SendEmailWidget() {
                 </div>
               </div>
             </div>
-            <div className="text-xs text-foreground mt-3 leading-relaxed">
-              This email and any files transmitted with it are confidential and intended solely for the use of the
-              individual or entity to whom they are addressed. If you have received this email in error please notify
-              the system manager. This message contains confidential information and is intended only for the individual
-              named. If you are not the named addressee you should not disseminate, distribute or copy this e-mail.
-              Please notify the sender immediately by e-mail if you have received this e-mail by mistake and delete this
-              e-mail from your system. If you are not the intended recipient you are notified that disclosing, copying,
-              distributing or taking any action in reliance on the contents of this information is strictly prohibited.
-            </div>
           </div>
 
-          <div className="flex-1 px-4 py-3">
+            <div className="flex-1 px-4 py-3">
             <Textarea
               className={`w-full border-0 resize-none focus-visible:ring-0 text-sm ${
-                bigScreen ? "h-full min-h-[300px]" : "h-32"
+              bigScreen ? "h-full min-h-[300px]" : ""
               }`}
               placeholder="Compose email"
+              style={
+              bigScreen
+                ? undefined
+                : { height: "auto", minHeight: "8rem", overflow: "hidden" }
+              }
+              onInput={e => {
+              if (!bigScreen) {
+                const target = e.target as HTMLTextAreaElement
+                target.style.height = "auto"
+                target.style.height = `${target.scrollHeight}px`
+              }
+              }}
             />
-          </div>
+            </div>
 
-          <div className="px-4 py-3 border-t bg-background">
+          <div className="px-4 py-3 border-t bg-background rounded-b-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 text-sm">Send</Button>

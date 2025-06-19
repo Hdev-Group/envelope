@@ -368,10 +368,8 @@ return (
                   </Button>
                 </div>
               </div>
-                  <Image src="/logo/main.png" alt="Envelope Logo" width={64} height={64} className="w-8 h-8" />
-              <h1 className="text-2xl lg:flex hidden font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                Envelope
-              </h1>
+                  <Image src="/logo/main.png" alt="Envelope Logo" width={64} height={64} className="w-8 h-8 md:hidden block" />
+                  <img src="/logo/wordmarks/light.png" alt="Envelope Wordmark" className="hidden h-8 w-auto md:block" />
             </div>
             <div className="relative w-full max-w-sm lg:w-96">
               <Search className="absolute  z-50 left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground" />
@@ -411,7 +409,7 @@ return (
       <div className="flex flex-1 overflow-hidden relative backdrop-blur-3xl bg-muted/50">
         {!sidebarCollapsed && (
           <div
-            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-30"
+            className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             onClick={() => setSidebarCollapsed(true)}
           />
         )}
@@ -419,7 +417,7 @@ return (
         <div
           className={cn(
             "bg-background lg:rounded-r-3xl rounded-br-3xl  backdrop-blur-xl  flex flex-col transition-all duration-500 ease-in-out",
-            "lg:relative absolute inset-y-0 left-0 z-40",
+            "lg:relative absolute inset-y-0 left-0 z-50",
             sidebarCollapsed ? "w-20 lg:w-20" : "w-72 lg:w-72",
             "lg:translate-x-0",
             sidebarCollapsed ? "-translate-x-full lg:translate-x-0" : "translate-x-0",
@@ -467,8 +465,7 @@ return (
           <div className="w-full border-t border-slate-700/30 mt-4 py-4">
               <div className="pl-4 flex flex-col">
                 <div className="flex items-center gap-2">
-                  <Image src="/logo/main.png" alt="Envelope Logo" width={24} height={24} className="w-6 h-6" />
-                  <p className="text-[14px] font-semibold">Envelope</p>
+                  <img src="/logo/wordmarks/light.png" alt="Envelope Wordmark" className="hidden h-6 w-auto md:block" />
                 </div>
                 <p className="text-xs text-muted-foreground">© 2025 Hdev Group</p>
               </div>

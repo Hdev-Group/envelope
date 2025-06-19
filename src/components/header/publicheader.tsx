@@ -53,12 +53,12 @@ export default function Header({ showBanner = true, bannerVariant = "announcemen
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-4">
                 <div className="rounded-lg flex items-center justify-center">
-                  <Image src="/logo/main.png" alt="Envelope Logo" width={32} height={32} className="w-8 h-8" />
+                  <Image src="/logo/main.png" alt="Envelope Logo" width={32} height={32} className="w-auto visible md:hidden h-8" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">Envelope</h1>
-              </div>
+                <Image src="/logo/wordmarks/light.png" alt="Envelope Wordmark" width={180} height={48} className="hidden md:block" />
+                </div>
             </div>
 
             {/* Desktop Navigation */}
