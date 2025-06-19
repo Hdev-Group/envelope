@@ -340,18 +340,30 @@ const sidebarItems = [
 export default function EmailApp() {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(mockEmails[0])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-const [showFullHeader, setShowFullHeader] = useState(false)
+  const [showFullHeader, setShowFullHeader] = useState(false)
+  const [showWidget, setShowWidget] = useState(false)
 
-// Toggle star for an email by id
-function onStar(emailId: string) {
+  // Toggle star for an email by id
+  function onStar(emailId: string) {
     setSelectedEmail((prev) => {
-        if (!prev || prev.id !== emailId) return prev
-        return { ...prev, isStarred: !prev.isStarred }
+      if (!prev || prev.id !== emailId) return prev
+      return { ...prev, isStarred: !prev.isStarred }
     })
-}
+  }
+
+  const handleWidgetClose = () => {
+    setShowWidget(false)
+  }
+
+  const handleComposeClick = () => {
+    setShowWidget(true)
+  }
 return (
     <div className="flex flex-col h-screen relative bg-gradient-to-br from-background to-foreground/30">
-      <SendEmailWidget />
+      <SendEmailWidget 
+        showWidget={showWidget} 
+        onClose={handleWidgetClose}
+      />      
       <header className="bg-muted/50 backdrop-blur-xl z-40 border-background px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-6">
@@ -426,11 +438,12 @@ return (
           <div className="p-4">
             <Button
               variant="default"
-              size={sidebarCollapsed ? "icon-lg" : "lg"}
+              size={sidebarCollapsed ? "icon" : "lg"}
               className={cn(
-                "rounded-2xl shadow-2xl bg-foreground text-background  transform transition-all duration-300",
+                "rounded-2xl shadow-2xl bg-foreground text-background transform transition-all duration-300",
                 sidebarCollapsed ? "w-12 h-12" : "w-full justify-start gap-3",
               )}
+              onClick={handleComposeClick}
             >
               <Pencil className="h-5 w-5" />
               {!sidebarCollapsed && <span className="font-semibold">Compose</span>}
@@ -443,7 +456,7 @@ return (
                   key={item.label}
                   variant={item.active ? "glass" : "ghost"}
                   className={cn(
-                    "w-full justify-start gap-4 h-12 rounded-2xl transition-all duration-300 hover:bg-accent/50",
+                    "w-full justify-start gap-4 h-10 rounded-2xl transition-all duration-300 hover:bg-accent/50",
                     sidebarCollapsed && "justify-center",
                     item.active && "bg-accent/40 border border-foreground/5 shadow-lg",
                   )}

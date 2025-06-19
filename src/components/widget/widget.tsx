@@ -1,8 +1,6 @@
-"use client"
 
-import type React from "react"
-
-import { Button } from "@/components/button/button"
+import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -21,46 +19,77 @@ import {
   MoreHorizontal,
   Trash2,
 } from "lucide-react"
-import { useState } from "react"
 
-export default function SendEmailWidget() {
-  const [isExpanded, setIsExpanded] = useState(true)
-  const [height, setHeight] = useState(500)
+interface SendEmailWidgetProps {
+  showWidget: boolean
+  onClose: () => void
+}
+
+export default function SendEmailWidget({ showWidget, onClose }: SendEmailWidgetProps) {
+  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMaximized, setIsMaximized] = useState(false)
   const [showCc, setShowCc] = useState(false)
   const [showBcc, setShowBcc] = useState(false)
-  const [bigScreen, setBigScreen] = useState(false)
 
-  const handleResize = (e: React.MouseEvent) => {
-    const startY = e.clientY
-    const startHeight = height
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const newHeight = Math.max(200, Math.min(600, startHeight - (e.clientY - startY)))
-      setHeight(newHeight)
+  useEffect(() => {
+    if (showWidget) {
+      setIsMinimized(false)
+      setIsMaximized(false)
     }
+  }, [showWidget])
 
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseup", handleMouseUp)
-    }
-
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseup", handleMouseUp)
+  if (!showWidget) {
+    return null
   }
 
-  if (!isExpanded) {
+  const handleClose = () => {
+    onClose()
+  }
+
+  const handleMinimize = () => {
+    setIsMinimized(true)
+  }
+
+  const handleMaximize = () => {
+    setIsMaximized(!isMaximized)
+    if (isMinimized) {
+      setIsMinimized(false)
+    }
+  }
+
+  const handleRestore = () => {
+    setIsMinimized(false)
+  }
+
+  if (isMinimized) {
     return (
       <div
-        className="fixed z-40 right-10 bottom-0 w-96 h-12 rounded-t-xl bg-muted-foreground/5 shadow-lg border cursor-pointer border-b-0"
-        onClick={() => setIsExpanded(true)}
+        className="fixed z-50 right-0 md:right-10 bottom-0 w-full md:w-96 h-12 rounded-t-xl bg-background shadow-lg border border-b-0 cursor-pointer"
+        onClick={handleRestore}
       >
-        <div className="flex items-center justify-between px-4 py-3 bg-background rounded-t-xl">
+        <div className="flex items-center justify-between px-4 py-3">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-6 w-6 " onClick={() => setIsExpanded(true)}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleRestore()
+              }}
+            >
               <Maximize2 className="w-3 h-3" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6 ">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleClose()
+              }}
+            >
               <X className="w-3 h-3" />
             </Button>
           </div>
@@ -71,47 +100,33 @@ export default function SendEmailWidget() {
 
   return (
     <>
-      {isExpanded && bigScreen && (
-        <div
-          className="fixed inset-0 bg-black/20 z-40"
-          onClick={() => {
-            setIsExpanded(false)
-            setBigScreen(false)
-          }}
-        />
-      )}
+      {isMaximized && <div className="fixed inset-0 bg-black/20 z-40" onClick={() => setIsMaximized(false)} />}
       <div
-        className={`fixed z-50 bg-background  shadow-2xl border ${
-          bigScreen
-            ? "top-[5%] left-[5%] w-[90%] rounded-t-xl rounded-b-xl"
-            : "border-b-0 rounded-t-xl h-auto w-[600px] right-0 bottom-0"
+        className={`fixed z-50 bg-background shadow-2xl border ${
+          isMaximized
+            ? "top-0 md:top-[5%] left-0 w-full md:left-[5%] md:w-[90%] h-full md:h-[90%] rounded-xl"
+            : "border-b-0 rounded-t-xl h-auto w-full md:w-[600px] right-0 bottom-0"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-3 bg-muted-foreground/5 rounded-t-xl border-b">
+
+        <div className="flex items-center justify-between px-4 py-3 bg-muted/50 rounded-t-xl border-b">
           <span className="text-sm font-medium text-foreground">New Message</span>
           <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => {
-                setIsExpanded(false)
-                setBigScreen(false)
-              }}
-            >
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleMinimize}>
               <Minus className="w-3 h-3" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={() => setBigScreen(!bigScreen)} className="h-6 w-6">
-              {bigScreen ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
+            <Button variant="ghost" size="icon" onClick={handleMaximize} className="h-6 w-6">
+              {isMaximized ? <Minimize2 className="w-3 h-3" /> : <Maximize2 className="w-3 h-3" />}
             </Button>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
+            <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleClose}>
               <X className="w-3 h-3" />
             </Button>
           </div>
         </div>
 
-        <div className={`flex flex-col ${bigScreen ? "h-[calc(100vh-130px)] rounded-b-xl" : "h-full"}`}>
-          <div className="px-4 py-2 border-b ">
+
+        <div className={`flex flex-col ${isMaximized ? "h-[calc(100%-60px)]" : "h-auto"}`}>
+          <div className="px-4 py-2 border-b">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-foreground">From:</span>
@@ -156,46 +171,14 @@ export default function SendEmailWidget() {
             <Input className="border-0 p-0 h-auto focus-visible:ring-0 text-sm" placeholder="Subject" />
           </div>
 
-          {/* Signature */}
-          <div className="px-4 py-3 border-b bg-background">
-            <div className="flex items-start gap-3">
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-                H
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-medium text-blue-600">Harry Campbell</div>
-                <div className="text-xs text-foreground">Chief Developer | Hdev Group</div>
-                <div className="text-xs text-foreground mt-1">
-                  <span className="font-medium">E:</span> hcampbell.dev@gmail.com{" "}
-                  <span className="font-medium">W:</span>{" "}
-                  <a href="#" className="text-blue-600 underline">
-                    https://hdev.uk
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-            <div className="flex-1 px-4 py-3">
+          <div className="flex-1 px-4 py-3">
             <Textarea
               className={`w-full border-0 resize-none focus-visible:ring-0 text-sm ${
-              bigScreen ? "h-full min-h-[300px]" : ""
+                isMaximized ? "h-full min-h-[300px]" : "min-h-[8rem]"
               }`}
               placeholder="Compose email"
-              style={
-              bigScreen
-                ? undefined
-                : { height: "auto", minHeight: "8rem", overflow: "hidden" }
-              }
-              onInput={e => {
-              if (!bigScreen) {
-                const target = e.target as HTMLTextAreaElement
-                target.style.height = "auto"
-                target.style.height = `${target.scrollHeight}px`
-              }
-              }}
             />
-            </div>
+          </div>
 
           <div className="px-4 py-3 border-t bg-background rounded-b-xl">
             <div className="flex items-center justify-between">
