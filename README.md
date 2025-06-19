@@ -1,4 +1,5 @@
 # ENVelope
+![image](https://github.com/user-attachments/assets/324f3b2d-a6d1-45ff-92f2-801c8061eaf6)
 
 > **The secure, encrypted, and reliable emailing software**
 
