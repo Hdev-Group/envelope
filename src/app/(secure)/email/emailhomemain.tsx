@@ -45,6 +45,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { V } from "vitest/dist/chunks/reporters.d.DL9pg5DB.js"
 import { CustomDropdown, DropdownItem, DropdownLabel, DropdownSeparator } from "@/components/dropdowns/dropdown"
 import SendEmailWidget from "@/components/widget/widget"
+import Image from "next/image"
 
 interface Email {
   id: string
@@ -367,9 +368,7 @@ return (
                   </Button>
                 </div>
               </div>
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
-                <span className="text-white font-bold text-lg">E</span>
-              </div>
+                  <Image src="/logo/main.png" alt="Envelope Logo" width={64} height={64} className="w-8 h-8" />
               <h1 className="text-2xl lg:flex hidden font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
                 Envelope
               </h1>
@@ -467,7 +466,10 @@ return (
           </ScrollArea>
           <div className="w-full border-t border-slate-700/30 mt-4 py-4">
               <div className="pl-4 flex flex-col">
-                <p className="text-[14px]">Envelope</p>
+                <div className="flex items-center gap-2">
+                  <Image src="/logo/main.png" alt="Envelope Logo" width={24} height={24} className="w-6 h-6" />
+                  <p className="text-[14px] font-semibold">Envelope</p>
+                </div>
                 <p className="text-xs text-muted-foreground">© 2025 Hdev Group</p>
               </div>
           </div>
