@@ -478,7 +478,8 @@ return (
           <div className="w-full border-t border-slate-700/30 mt-4 py-4">
               <div className="pl-4 flex flex-col">
                 <div className="flex items-center gap-2">
-                  <img src="/logo/wordmarks/light.png" alt="Envelope Wordmark" className="hidden h-6 w-auto md:block" />
+                  <img src="/logo/wordmarks/light.png" alt="Envelope Wordmark" className={`h-6 w-auto ${sidebarCollapsed ? "hidden" : ""}`} />
+                  <img src="/logo/main.png" alt="Envelope Wordmark" className={`h-6 w-auto ${sidebarCollapsed ? "" : "hidden"}`} />
                 </div>
                 <p className="text-xs text-muted-foreground">© 2025 Hdev Group</p>
               </div>
